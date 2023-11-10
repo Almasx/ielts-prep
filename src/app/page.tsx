@@ -1,9 +1,14 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 
 export default async function Home() {
   const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/api/auth/signin")
+  }
 
   const user = await db.user.findUnique({
     where: { id: session?.user.id },
