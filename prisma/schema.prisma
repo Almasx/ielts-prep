@@ -8,16 +8,36 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
+model Essay {
+    id       String @id @default(cuid())
+    question String @db.Text
+    content  String @db.Text
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
+    createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
     createdById String
 
-    @@index([name])
+    evaluation Evaluation?
+
+    @@index([createdById])
+}
+
+model Evaluation {
+    id                     Int    @id @default(autoincrement())
+    grammarScore           Float
+    grammarComment         String @db.Text
+    coherenceScore         Float
+    coherenceComment       String @db.Text
+    lexicalResourceScore   Float
+    lexicalResourceComment String @db.Text
+    taskAchievementScore   Float
+    taskAchievementComment String @db.Text
+    overallSuggestion      String @db.Text
+
+    essayId String @unique
+    essay   Essay  @relation(fields: [essayId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth
@@ -37,6 +57,7 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -45,6 +66,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model User {
@@ -55,7 +78,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    posts         Essay[]
 }
 
 model VerificationToken {
