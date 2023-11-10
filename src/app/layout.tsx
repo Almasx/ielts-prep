@@ -31,7 +31,9 @@ export default async function RootLayout({
         <TRPCReactProvider cookies={cookies().toString()}>
           <div className="border-b border-neutral-200">
             <div className="mx-auto flex h-16 max-w-4xl items-center justify-between py-2">
-              <Image src="/logo.svg" alt="logo" width={48} height={36} />
+              <Link href="/">
+                <Image src="/logo.svg" alt="logo" width={48} height={36} />
+              </Link>
               <div className="flex gap-8">
                 <Link className="font-medium text-neutral-400" href="/">
                   What we teach

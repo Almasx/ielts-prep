@@ -9,7 +9,7 @@ import Button from "~/app/_components/button";
 import { Spinner } from "~/app/_components/spinner";
 import TextAreaField from "~/app/_components/text-area";
 
-export default function Query({ userId }: { userId: string }) {
+export default function Query() {
   const [essay, setEssay] = useState<string>();
   const [question, setQuestion] = useState<string>();
   const [loading, setLoading] = useState(true);
